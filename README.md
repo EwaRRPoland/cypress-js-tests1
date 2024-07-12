@@ -30,7 +30,7 @@
 
 13. ## Ponowne uruchomienia Cypress na komendę w VScode/terminal ``npx cypress open``.
 
-# Gdzie znajdziesz testy?:
+# Gdzie znajdziesz początkowe testy?:
 
 ##  Struktura katalogów i plików:
 
@@ -59,3 +59,22 @@
 ## Plik z testami:
 
 ``login_tests.cy.js``
+
+# Zestawienie tych samych testów z zastosowaniem Page object pattern i bez.
+
+Dwa sposoby pisania testów, na tym samym zestawie testów. 
+
+Wyjściowy zestaw testów `cypress-js-tests1/cypress/e2e/nonPOP.cy.js` 
+
+i do niego stworzony odpowiednik z zastosowaniem POP `cypress-js-tests1/cypress/e2e/POP.cy.js` 
+oraz z logiką `cypress-js-tests1/cypress/pages/OLDLogin.js`.
+
+# Zastosowanie Page object pattern w testach.
+
+1. Poprzednie testy z wykorzystaniem wzorca `Page object pattern` - `login.cy.js`.
+
+2. Każda strona ma swój własny plik w folderze `pages`: 
+
+a. Dla strony logowania istnieje plik `Login.js`. 
+
+b. Dla strony głównej istnieje plik `HomePage.js`.
