@@ -1,4 +1,5 @@
 //1. istniejące url, GET
+
 describe('httpbin tests', () => {
   it('response code should be 200', () => {
     cy.request('https://httpbin.org').then(response => {
@@ -7,8 +8,6 @@ describe('httpbin tests', () => {
       assert.equal(200, status);
     })
   })
-
-
 
 //2. nieistniejące url, GET
 
@@ -25,9 +24,129 @@ describe('httpbin tests', () => {
     })
   })
 
+  //3. nieprawidłowe url, GET
 
-//3. Test, w którym wysyłamy żądanie do adresu URL https://httpbin.org/get z jednym parametrem "key", a wartość tego parametru to "value", GET
+  const request1a = {
+    url: 'https://httpbin.com/123',
+    failOnStatusCode: false
+  };
 
+  it('response code should be 404', () => {
+    cy.request(request1a).then(response => {
+      const status = response.status;
+
+      assert.equal(404, status);
+    })
+  })
+
+  //4. Zwraca pytającego adres IP 
+
+  const request1b = {
+    url: 'http://httpbin.org/ip',
+    failOnStatusCode: false
+  };
+
+  it('response code should be 200', () => {
+    cy.request(request1b).then(response => {
+      const status = response.status;
+
+      assert.equal(200, status);
+    })
+  })
+
+  //5. Zwraca zestaw nagłówków odpowiedzi z ciągu zapytania
+
+const request1c = {
+  method: 'POST',
+    url: 'https://httpbin.org/response-headers?freeform=',
+    failOnStatusCode: false
+  };
+
+  it('response code should be 200', () => {
+    cy.request(request1c).then(response => {
+      const status = response.status;
+      assert.equal(200, status);
+      assert.equal('87', response.headers['content-length']);
+    })
+  })
+
+  //6. Zwraca wszystko, co zostało przekazane w danych żądania.
+
+  const request1d = {
+  method: 'DELETE',
+    url: 'https://httpbin.org/anything/{anything}',
+    failOnStatusCode: false
+  };
+
+  it('Returns anything passed in request data - DELETE', () => {
+    cy.request(request1d).then(response => {
+      const status = response.status;
+      assert.equal(200, status);
+    })
+  })
+
+  //7. Zwraca wszystko, co zostało przekazane w danych żądania.
+
+  const request1e = {
+  method: 'PUT',
+    url: 'https://httpbin.org/anything/{anything}',
+    failOnStatusCode: false
+  };
+
+  it('Returns anything passed in request data - PUT', () => {
+    cy.request(request1e).then(response => {
+      const status = response.status;
+      assert.equal(200, status);
+    })
+  })
+
+  //8. Zwraca wszystko, co zostało przekazane w danych żądania.
+
+  const request1f = {
+  method: 'GET',
+    url: 'https://httpbin.org/anything/{anything}',
+    failOnStatusCode: false
+  };
+
+  it('Returns anything passed in request data - GET', () => {
+    cy.request(request1f).then(response => {
+      const status = response.status;
+      assert.equal(200, status);
+    })
+  })
+
+  //9. Zwraca wszystko, co zostało przekazane w danych żądania.
+
+  const request1g = {
+  method: 'PATCH',
+    url: 'https://httpbin.org/anything/{anything}',
+    failOnStatusCode: false
+  };
+
+  it('Returns anything passed in request data - PATCH', () => {
+    cy.request(request1g).then(response => {
+      const status = response.status;
+      assert.equal(200, status);
+    })
+  })
+
+  //10. Zwraca wszystko, co zostało przekazane w danych żądania.
+
+  const request1h = {
+  method: 'POST',
+    url: 'https://httpbin.org/anything/{anything}',
+    failOnStatusCode: false
+  };
+
+  it('Returns anything passed in request data - POST', () => {
+    cy.request(request1h).then(response => {
+      const status = response.status;
+      assert.equal(200, status);
+    })
+  })
+  
+//11. Test, w którym wysyłamy żądanie do adresu URL https://httpbin.org/get z jednym parametrem "key", 
+//a wartość tego parametru to "value", GET
 
   const request2 = {
     url: 'https://httpbin.org/get',
@@ -45,7 +164,7 @@ describe('httpbin tests', () => {
     })
   })
 
-//4. Przekazujemy parametr "username"  o wartości "ewarr" za pomocą POST
+//12. Przekazujemy parametr "username"  o wartości "ewarr" za pomocą POST
 
   const request3 = {
   method: 'POST',
@@ -63,15 +182,16 @@ describe('httpbin tests', () => {
       assert.equal("ewarr", response.body.args.username);
     })
   })
-//})
 
-//5.
-//describe('httpbin tests', () => {
+  //13. Sprawdzamy, czy ciąło odpowiedzi jest identyczne z ciałem żadania
+  //Oczekujemy, że serwer przetworzy dane i dostarczy odpowiedż różną od pierwotnego obiektu. 
+  //Załozenie czynione dla bezpiecznej i elastycznej komunikacji między klientem a serwerem
+
   const bodyData = {
-    bodyKey: "bodyValue"
+    bodyKey: "figlarna kotka swawoli do woli"
   };
 
-  const request = {
+  const request4 = {
     method: 'POST',
     url: 'https://httpbin.org/post',
     body: bodyData,
@@ -79,9 +199,71 @@ describe('httpbin tests', () => {
   };
 
   it('complex post test', () => {
-    cy.request(request).then(response => {
+    cy.request(request4).then(response => {
+      const status = response.status;
       assert.equal(200, response.status);
       assert.notStrictEqual(bodyData, response.body.data);
+    })
+  })
+
+//14.To kompleksowy test, który ustawia nagłówki i sprawdza ich poprawność
+//(wszystkie nagłówki żądania httpbin podaje w polu responseHeaders.customHeader)
+//Mogą zawierać niestandardowe dane, takie jak tokeny uwierzytelniające, identyfikatory sesji, metadane lub inne informacje.
+ 
+  const request5 = {
+    method: 'GET',
+    url: 'https://httpbin.org/headers',
+    headers: {
+      "customHeader": "Kotki dwa, TRATA TA"
+    },
+    failOnStatusCode: false
+  };
+
+  it('test that header set correctly', () => {
+    cy.request(request5).then(response => {
+      assert.equal(200, response.status);
+      assert.equal("Kotki dwa, TRATA TA", response.requestHeaders.customHeader);
+    })
+  })
+
+//15. Często potrzebujemy symulować żądania z różnych przeglądarek. 
+//Aby to zrobić, należy ustawić właściwość User - Agent (np. zasymulowanie konkretnego sprzętu)
+
+  const request6 = {
+    method: 'GET',
+    url: 'https://httpbin.org/headers',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'
+    },
+    failOnStatusCode: false
+  };
+
+  it('test that user-agent set correctly', () => {
+    cy.request(request6).then(response => {
+      assert.equal(200, response.status);
+      assert.equal("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0", response.requestHeaders['user-agent']);
+    })
+  })
+
+//16.Niektóre testy wymagają wysłania pliku cookie w żądaniu.
+//Ten plik to informacja, która jest przechowywana w przeglądarce
+//i którą przeglądarka automatycznie wysyła przy każdym żądaniu.Jeśli użyjemycy.request(),
+//to wysłanie Cookie jest wysłaniem nagłówka z nazwą Cookie, oraz wartości w formacie klucz = znaczenie.
+//W nagłówku żądania ustawiamy ciasteczko o nazwie cookieName i wartości cookieValue (np. zasymulowanie użytkownika pracującego  na urzadzeniu)
+  
+  const request7 = {
+    method: 'GET',
+    url: 'https://httpbin.org/headers',
+    headers: {
+      'Cookie': 'cookieName=cookieValue'
+    },
+    failOnStatusCode: false
+  };
+
+  it('test send cookie', () => {
+    cy.request(request7).then(response => {
+      assert.equal(200, response.status);
+      assert.equal("cookieName=cookieValue", response.requestHeaders['Cookie']);
     })
   })
 })
