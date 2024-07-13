@@ -317,4 +317,19 @@ it('Returns a simple JSON document', () => {
     assert.equal('Wake up to WonderWidgets!', response.body.slideshow.slides[0].title);
   });
 }); 
+  
+  //19. czas trwania żądania- - asercja, aby sprawdzić, czy czas trwania odpowiedzi jest mniejszy niż określony limit (np. 1 sekunda)
+
+  const request11 = {
+  method: 'GET',
+  url: 'https://httpbin.org/json',
+  failOnStatusCode: false
+};
+
+  //cy.request('GET', 'https://httpbin.org/json')
+  it.only('time response', () => {
+    cy.request(request11).then(response => {
+      expect(response.duration).to.not.be.greaterThan(1000); // Oczekiwany czas trwania w milisekundach
+    });
+  })
 })
