@@ -294,10 +294,11 @@ describe('httpbin tests', () => {
     failOnStatusCode: false
   };
 
-  it.only('logging in testuser', () => {
+  it('Returns a set of response headers from the query string', () => {
        
     cy.request(request9).then(response => {
       assert.equal(200, response.status);
+       assert.equal('dupa', response.headers['freeform']);
 
     })
   })
