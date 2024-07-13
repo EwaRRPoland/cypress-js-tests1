@@ -315,6 +315,9 @@ it('Returns a simple JSON document', () => {
   cy.request(request10).then(response => {
     assert.equal(200, response.status);
     assert.equal('Wake up to WonderWidgets!', response.body.slideshow.slides[0].title);
+    //można sprawdzić, czy czas trwania żądania nie przekracza 800 milisekund:
+    cy.log("test duration <= 800ms");
+    assert.isTrue(response.duration <= 800)
   });
 }); 
   
@@ -326,7 +329,6 @@ it('Returns a simple JSON document', () => {
   failOnStatusCode: false
 };
 
-  //cy.request('GET', 'https://httpbin.org/json')
   it('time response', () => {
     cy.request(request11).then(response => {
       expect(response.duration).to.not.be.greaterThan(1000); // Oczekiwany czas trwania w milisekundach
