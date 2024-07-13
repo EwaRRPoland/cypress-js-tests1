@@ -9,7 +9,7 @@ describe('httpbin tests', () => {
     })
   })
 
-//2. nieistniejące url, GET
+  //2. nieistniejące url, GET
 
   const request1 = {
     url: 'https://httpbin.org/non-existing-url',
@@ -56,8 +56,8 @@ describe('httpbin tests', () => {
 
   //5. Zwraca zestaw nagłówków odpowiedzi z ciągu zapytania
 
-const request1c = {
-  method: 'POST',
+  const request1c = {
+    method: 'POST',
     url: 'https://httpbin.org/response-headers?freeform=',
     failOnStatusCode: false
   };
@@ -73,7 +73,7 @@ const request1c = {
   //6. Zwraca wszystko, co zostało przekazane w danych żądania.
 
   const request1d = {
-  method: 'DELETE',
+    method: 'DELETE',
     url: 'https://httpbin.org/anything/{anything}',
     failOnStatusCode: false
   };
@@ -88,7 +88,7 @@ const request1c = {
   //7. Zwraca wszystko, co zostało przekazane w danych żądania.
 
   const request1e = {
-  method: 'PUT',
+    method: 'PUT',
     url: 'https://httpbin.org/anything/{anything}',
     failOnStatusCode: false
   };
@@ -103,7 +103,7 @@ const request1c = {
   //8. Zwraca wszystko, co zostało przekazane w danych żądania.
 
   const request1f = {
-  method: 'GET',
+    method: 'GET',
     url: 'https://httpbin.org/anything/{anything}',
     failOnStatusCode: false
   };
@@ -118,7 +118,7 @@ const request1c = {
   //9. Zwraca wszystko, co zostało przekazane w danych żądania.
 
   const request1g = {
-  method: 'PATCH',
+    method: 'PATCH',
     url: 'https://httpbin.org/anything/{anything}',
     failOnStatusCode: false
   };
@@ -133,7 +133,7 @@ const request1c = {
   //10. Zwraca wszystko, co zostało przekazane w danych żądania.
 
   const request1h = {
-  method: 'POST',
+    method: 'POST',
     url: 'https://httpbin.org/anything/{anything}',
     failOnStatusCode: false
   };
@@ -145,8 +145,8 @@ const request1c = {
     })
   })
   
-//11. Test, w którym wysyłamy żądanie do adresu URL https://httpbin.org/get z jednym parametrem "key", 
-//a wartość tego parametru to "value", GET
+  //11. Test, w którym wysyłamy żądanie do adresu URL https://httpbin.org/get z jednym parametrem "key", 
+  //a wartość tego parametru to "value", GET
 
   const request2 = {
     url: 'https://httpbin.org/get',
@@ -164,10 +164,10 @@ const request1c = {
     })
   })
 
-//12. Przekazujemy parametr "username"  o wartości "ewarr" za pomocą POST
+  //12. Przekazujemy parametr "username"  o wartości "ewarr" za pomocą POST
 
   const request3 = {
-  method: 'POST',
+    method: 'POST',
     url: 'https://httpbin.org/post',
     qs: {
       "username": "ewarr"
@@ -206,9 +206,9 @@ const request1c = {
     })
   })
 
-//14.To kompleksowy test, który ustawia nagłówki i sprawdza ich poprawność
-//(wszystkie nagłówki żądania httpbin podaje w polu responseHeaders.customHeader)
-//Mogą zawierać niestandardowe dane, takie jak tokeny uwierzytelniające, identyfikatory sesji, metadane lub inne informacje.
+  //14.To kompleksowy test, który ustawia nagłówki i sprawdza ich poprawność
+  //(wszystkie nagłówki żądania httpbin podaje w polu responseHeaders.customHeader)
+  //Mogą zawierać niestandardowe dane, takie jak tokeny uwierzytelniające, identyfikatory sesji, metadane lub inne informacje.
  
   const request5 = {
     method: 'GET',
@@ -226,8 +226,8 @@ const request1c = {
     })
   })
 
-//15. Często potrzebujemy symulować żądania z różnych przeglądarek. 
-//Aby to zrobić, należy ustawić właściwość User - Agent (np. zasymulowanie konkretnego sprzętu)
+  //15. Często potrzebujemy symulować żądania z różnych przeglądarek. 
+  //Aby to zrobić, należy ustawić właściwość User - Agent (np. zasymulowanie konkretnego sprzętu)
 
   const request6 = {
     method: 'GET',
@@ -245,11 +245,11 @@ const request1c = {
     })
   })
 
-//16.Niektóre testy wymagają wysłania pliku cookie w żądaniu.
-//Ten plik to informacja, która jest przechowywana w przeglądarce
-//i którą przeglądarka automatycznie wysyła przy każdym żądaniu.Jeśli użyjemycy.request(),
-//to wysłanie Cookie jest wysłaniem nagłówka z nazwą Cookie, oraz wartości w formacie klucz = znaczenie.
-//W nagłówku żądania ustawiamy ciasteczko o nazwie cookieName i wartości cookieValue (np. zasymulowanie użytkownika pracującego  na urzadzeniu)
+  //16.Niektóre testy wymagają wysłania pliku cookie w żądaniu.
+  //Ten plik to informacja, która jest przechowywana w przeglądarce
+  //i którą przeglądarka automatycznie wysyła przy każdym żądaniu.Jeśli użyjemycy.request(),
+  //to wysłanie Cookie jest wysłaniem nagłówka z nazwą Cookie, oraz wartości w formacie klucz = znaczenie.
+  //W nagłówku żądania ustawiamy ciasteczko o nazwie cookieName i wartości cookieValue (np. zasymulowanie użytkownika pracującego  na urzadzeniu)
   
   const request7 = {
     method: 'GET',
@@ -266,4 +266,41 @@ const request1c = {
       assert.equal("cookieName=cookieValue", response.requestHeaders['Cookie']);
     })
   })
+
+  //17. Autoryzacja użytkownika przy użyciu protokołu HTTP Basic Auth
+  //testy nie przechodzą, pomimo 401 - nieudane uwierzytelnienie., że na API przechodzą
+
+  const request8 = {
+    method: 'GET',
+    url: 'https://httpbin.org/basic-auth/testuser/testpassword',
+    
+    failOnStatusCode: false
+  };
+
+  it('logging in testuser', () => {
+       
+    cy.request(request8).then(response => {
+      assert.equal(401, response.status);
+
+    })
+  })
+
+//18. Zwraca zestaw nagłówków odpowiedzi z ciągu zapytania.
+
+  const request9 = {
+    method: 'POST',
+    url: 'https://httpbin.org/response-headers?freeform=dupa',
+    
+    failOnStatusCode: false
+  };
+
+  it.only('logging in testuser', () => {
+       
+    cy.request(request9).then(response => {
+      assert.equal(200, response.status);
+
+    })
+  })
+
+  
 })
