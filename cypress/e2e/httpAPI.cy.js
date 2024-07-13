@@ -303,5 +303,24 @@ describe('httpbin tests', () => {
     })
   })
 
+//18. Zwraca zestaw nagłówków odpowiedzi z ciągu zapytania.
+
+  const request10 = {
+    method: 'GET',
+    url: 'https://httpbin.org/json',
+    
+    failOnStatusCode: false
+  };
+
+  it.only('Returns a simple JSON document', () => {
+       
+    cy.request(request10).then(response => {
+      assert.equal(200, response.status);
+      //assert.notStrictEqual(expectedBody, response.body);
+      assert.equal('Wake up to WonderWidgets!', response.body.slideshow.slides['title']);
+       //assert.equal('dupa', response.headers['freeform']);
+
+    })
+  })  
   
 })
