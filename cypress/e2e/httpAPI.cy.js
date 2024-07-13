@@ -311,7 +311,7 @@ describe('httpbin tests', () => {
   failOnStatusCode: false
 };
 
-it.only('Returns a simple JSON document', () => {
+it('Returns a simple JSON document', () => {
   cy.request(request10).then(response => {
     assert.equal(200, response.status);
     assert.equal('Wake up to WonderWidgets!', response.body.slideshow.slides[0].title);
