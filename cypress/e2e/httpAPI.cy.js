@@ -333,5 +333,28 @@ it('Returns a simple JSON document', () => {
     cy.request(request11).then(response => {
       expect(response.duration).to.not.be.greaterThan(1000); // Oczekiwany czas trwania w milisekundach
     });
+  });
+
+//20. testu, który wysyła 10 żądań z losowymi identyfikatoram
+
+  it('test random ids', () => {
+    for(let i = 0; i < 10; i++) {
+      const randomId = getRandomInt(10000000);
+
+      const request12 = {
+        url: 'https://httpbin.org/headers',
+        id: randomId
+      }
+
+      cy.request(request12).then(response => {
+        assert.isTrue(response.status == 200);
+        cy.log("ID:", randomId);
+      })
+    } 
   })
 })
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
