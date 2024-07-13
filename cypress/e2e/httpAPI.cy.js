@@ -327,7 +327,7 @@ it('Returns a simple JSON document', () => {
 };
 
   //cy.request('GET', 'https://httpbin.org/json')
-  it.only('time response', () => {
+  it('time response', () => {
     cy.request(request11).then(response => {
       expect(response.duration).to.not.be.greaterThan(1000); // Oczekiwany czas trwania w milisekundach
     });
